@@ -1,0 +1,33 @@
+---
+#deployment da aplicacao
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conversaotemperatura
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: conversaotemperatura
+  template:
+    metadata:
+      labels:
+        app: conversaotemperatura
+    spec:
+      containers:
+        - name: kubenews
+          image: decmaster10/conversao-temperatura:v1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: conversao-temperatura
+spec:
+  selector:
+    app: conversaotemperatura
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30000
+  type: NodePort
